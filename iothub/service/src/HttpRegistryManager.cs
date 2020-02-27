@@ -959,58 +959,86 @@ namespace Microsoft.Azure.Devices
 
         public override Task<JobProperties> ExportDevicesAsync(string exportBlobContainerUri, bool excludeKeys)
         {
-            return ExportDevicesAsync(exportBlobContainerUri, excludeKeys, CancellationToken.None);
+            return ExportDevicesAsync(
+                JobProperties.CreateForExportJob(
+                    exportBlobContainerUri,
+                    excludeKeys));
         }
 
         public override Task<JobProperties> ExportDevicesAsync(string exportBlobContainerUri, bool excludeKeys, CancellationToken ct)
         {
-            return ExportDevicesAsync(exportBlobContainerUri, null, excludeKeys, ct);
+            return ExportDevicesAsync(
+                JobProperties.CreateForExportJob(
+                    exportBlobContainerUri,
+                    excludeKeys),
+                ct);
         }
 
         public override Task<JobProperties> ExportDevicesAsync(string exportBlobContainerUri, string outputBlobName, bool excludeKeys)
         {
-            return ExportDevicesAsync(exportBlobContainerUri, outputBlobName, excludeKeys, CancellationToken.None);
+            return ExportDevicesAsync(
+                JobProperties.CreateForExportJob(
+                    exportBlobContainerUri,
+                    excludeKeys,
+                    outputBlobName));
         }
 
         public override Task<JobProperties> ExportDevicesAsync(string exportBlobContainerUri, string outputBlobName, bool excludeKeys, CancellationToken ct)
         {
-            var jobProperties = new JobProperties()
-            {
-                Type = JobType.ExportDevices,
-                OutputBlobContainerUri = exportBlobContainerUri,
-                ExcludeKeysInExport = excludeKeys,
-                OutputBlobName = outputBlobName,
-            };
+            return ExportDevicesAsync(
+                JobProperties.CreateForExportJob(
+                    exportBlobContainerUri,
+                    excludeKeys,
+                    outputBlobName),
+                ct);
+        }
 
-            return CreateJobAsync(jobProperties, ct);
+        public override Task<JobProperties> ExportDevicesAsync(JobProperties jobParameters, CancellationToken cancellationToken = default)
+        {
+            jobParameters.Type = JobType.ExportDevices;
+            return CreateJobAsync(jobParameters, cancellationToken);
         }
 
         public override Task<JobProperties> ImportDevicesAsync(string importBlobContainerUri, string outputBlobContainerUri)
         {
-            return ImportDevicesAsync(importBlobContainerUri, outputBlobContainerUri, CancellationToken.None);
+            return ImportDevicesAsync(
+                JobProperties.CreateForImportJob(
+                    importBlobContainerUri,
+                    outputBlobContainerUri));
         }
 
         public override Task<JobProperties> ImportDevicesAsync(string importBlobContainerUri, string outputBlobContainerUri, CancellationToken ct)
         {
-            return ImportDevicesAsync(importBlobContainerUri, outputBlobContainerUri, null, ct);
+            return ImportDevicesAsync(
+                JobProperties.CreateForImportJob(
+                    importBlobContainerUri,
+                    outputBlobContainerUri),
+                ct);
         }
 
         public override Task<JobProperties> ImportDevicesAsync(string importBlobContainerUri, string outputBlobContainerUri, string inputBlobName)
         {
-            return ImportDevicesAsync(importBlobContainerUri, outputBlobContainerUri, inputBlobName, CancellationToken.None);
+            return ImportDevicesAsync(
+                JobProperties.CreateForImportJob(
+                    importBlobContainerUri,
+                    outputBlobContainerUri,
+                    inputBlobName));
         }
 
         public override Task<JobProperties> ImportDevicesAsync(string importBlobContainerUri, string outputBlobContainerUri, string inputBlobName, CancellationToken ct)
         {
-            var jobProperties = new JobProperties()
-            {
-                Type = JobType.ImportDevices,
-                InputBlobContainerUri = importBlobContainerUri,
-                OutputBlobContainerUri = outputBlobContainerUri,
-                InputBlobName = inputBlobName,
-            };
+            return ImportDevicesAsync(
+                JobProperties.CreateForImportJob(
+                    importBlobContainerUri,
+                    outputBlobContainerUri,
+                    inputBlobName),
+                ct);
+        }
 
-            return CreateJobAsync(jobProperties, ct);
+        public override Task<JobProperties> ImportDevicesAsync(JobProperties jobParameters, CancellationToken cancellationToken = default)
+        {
+            jobParameters.Type = JobType.ImportDevices;
+            return CreateJobAsync(jobParameters, cancellationToken);
         }
 
         private Task<JobProperties> CreateJobAsync(JobProperties jobProperties, CancellationToken ct)

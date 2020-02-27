@@ -3,12 +3,20 @@
 
 namespace Microsoft.Azure.Devices
 {
-    class ClientApiVersionHelper
+    /// <summary>
+    /// Holds the API version numbers required in data-plane calls to the service
+    /// </summary>
+    internal class ClientApiVersionHelper
     {
-        const string ApiVersionQueryPrefix = "api-version=";
-        const string ApiVersionGA = "2016-02-03";
-        const string ApiVersionLatest = "2019-03-30";
+        private const string ApiVersionQueryPrefix = "api-version=";
+        private const string ApiVersionGA = "2016-02-03";
+        private const string ApiVersionLatest = "2020-03-13";
+
+        /// <summary>
+        /// The default API version to use for all data-plane service calls
+        /// </summary>
         public const string ApiVersionQueryString = ApiVersionQueryPrefix + ApiVersionLatest;
+
         public const string ApiVersionQueryStringGA = ApiVersionQueryPrefix + ApiVersionGA;
     }
 }
